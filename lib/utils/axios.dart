@@ -47,24 +47,3 @@ class ApiService {
     }
   }
 }
-
-
-// TODO: 사용예시
-// void postDataWithToken() async {
-//   try {
-//     final response = await ApiService.postRequest('https://api.example.com/data', {'key': 'value'}, token: 'your_token_here');
-//     final data = jsonDecode(response.body);
-//     print(data);
-//   } catch (e) {
-//     print(e.toString());
-//   }
-// }
-//
-// void postDataWithoutToken() async {
-//   try {
-//     final response = await ApiService.postRequest('https://api.example.com/data', {'key': 'value'});
-//     final data = jsonDecode(response.body);
-//     print(data);
-//   } catch (e) {
-//     print(e.toString());
-//   }
