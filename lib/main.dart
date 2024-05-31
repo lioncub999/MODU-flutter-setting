@@ -24,6 +24,9 @@ Future<void> main() async {
   runApp(ChangeNotifierProvider(
     create: (c) => MainStore(),
     child: MaterialApp(
+        theme: ThemeData(
+          splashFactory: NoSplash.splashFactory,  // Ripple Effect 비활성화
+        ),
         // TODO : debug 딱지 때기
         debugShowCheckedModeBanner: false,
         home: MyApp()),
@@ -65,7 +68,11 @@ class _MyAppState extends State<MyApp> {
       appBar: AppBarUI(
         title: "TITLE",setFromGetData:setFromGetData,setFromPostData:setFromPostData
       ),
-      body: [Mainpage(fromGetData:fromGetData, fromPostData:fromPostData), Subpage(), Sub1page()][context.watch<MainStore>().tapState],
+      body: [
+        Mainpage(fromGetData:fromGetData, fromPostData:fromPostData),
+        Subpage(),
+        Sub1page()]
+      [context.watch<MainStore>().tapState],
       bottomNavigationBar: BottomBarUI(),
     );
   }

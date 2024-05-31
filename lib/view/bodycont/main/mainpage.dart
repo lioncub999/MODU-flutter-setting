@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modu_flutter/view/customWidget/listview.dart';
 
 class Mainpage extends StatelessWidget {
   const Mainpage({super.key, this.fromGetData, this.fromPostData});
@@ -7,18 +8,6 @@ class Mainpage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: ListView.builder(
-          itemCount: 1,
-          itemBuilder: (c, i) {
-            return Column(
-              children: [
-                Text("getData : ${fromGetData}"),
-                Text("postData : ${fromPostData}")
-              ],
-            );
-          }),
-    );
+    return CustomListView();
   }
 }
