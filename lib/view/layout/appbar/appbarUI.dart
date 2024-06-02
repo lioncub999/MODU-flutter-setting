@@ -1,18 +1,25 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:modu_flutter/apis/HelloApi.dart';
+import 'package:modu_flutter/view/customWidget/navigator.dart';
 
 import '../../../utils/axios.dart';
 
-class AppBarUI extends StatelessWidget implements PreferredSizeWidget{
-  const AppBarUI({super.key, required this.title,this.bottom, this.setFromGetData, this.setFromPostData});
+class AppBarUI extends StatelessWidget implements PreferredSizeWidget {
+  const AppBarUI(
+      {super.key,
+      required this.title,
+      this.bottom,
+      this.setFromGetData,
+      this.setFromPostData});
+
   final String title;
   final PreferredSizeWidget? bottom;
   final setFromGetData;
   final setFromPostData;
-
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +34,11 @@ class AppBarUI extends StatelessWidget implements PreferredSizeWidget{
         print(e.toString());
       }
     }
+
     void postData() async {
       try {
-        final response = await HelloApi.postHello('/auth/login', {'loginNm': '팔세휘', 'loginPw':'123'});
+        final response = await HelloApi.postHello(
+            '/auth/login', {'loginNm': '팔세휘', 'loginPw': '123'});
         final data = jsonDecode(response.body);
         setFromPostData(data);
         print(data);
@@ -43,18 +52,29 @@ class AppBarUI extends StatelessWidget implements PreferredSizeWidget{
       title: Text(title),
       actions: [
         Text("임시"),
-        IconButton(onPressed: (){
-          getData();
-        }, icon: Icon(Icons.star_border)),
-        IconButton(onPressed: (){
-          postData();
-        }, icon: Icon(Icons.add_box_outlined))
+        IconButton(
+            onPressed: () {
+              getData();
+            },
+            icon: Icon(Icons.star_border)),
+        GestureDetector(
+          child: Icon(Icons.add_box_outlined),
+          onTap: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => CustomNavigator()),
+              )
+            );
+          },
+        ),
       ],
-
     );
   }
 
   // TODO: kToolbarHeight : appbar 높이(int)
   @override
-  Size get preferredSize => Size.fromHeight(bottom == null ? kToolbarHeight : kToolbarHeight + bottom!.preferredSize.height);
+  Size get preferredSize => Size.fromHeight(bottom == null
+      ? kToolbarHeight
+      : kToolbarHeight + bottom!.preferredSize.height);
 }
