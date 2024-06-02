@@ -62,9 +62,7 @@ class AppBarUI extends StatelessWidget implements PreferredSizeWidget {
           onTap: () {
             Navigator.push(
               context,
-              CupertinoPageRoute(
-                builder: (context) => CustomNavigator()),
-              )
+              CupertinoPageRoute(builder: (context) => CustomNavigator()),
             );
           },
         ),
