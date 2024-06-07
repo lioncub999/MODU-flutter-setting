@@ -2,11 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:modu_flutter/apis/HelloApi.dart';
 import 'package:modu_flutter/view/customWidget/navigator.dart';
-
-import '../../../utils/axios.dart';
 
 class AppBarUI extends StatelessWidget implements PreferredSizeWidget {
   const AppBarUI(
@@ -26,7 +23,6 @@ class AppBarUI extends StatelessWidget implements PreferredSizeWidget {
     void getData() async {
       try {
         final response = await HelloApi.getHello();
-        // final data = jsonDecode(response.body);
         final data = response.body;
         setFromGetData(data);
         print(data);
@@ -37,8 +33,7 @@ class AppBarUI extends StatelessWidget implements PreferredSizeWidget {
 
     void postData() async {
       try {
-        final response = await HelloApi.postHello(
-            '/auth/login', {'loginNm': '팔세휘', 'loginPw': '123'});
+        final response = await HelloApi.postHello({'loginId': 'asd', 'loginPw': 'asd'});
         final data = jsonDecode(response.body);
         setFromPostData(data);
         print(data);
@@ -54,7 +49,8 @@ class AppBarUI extends StatelessWidget implements PreferredSizeWidget {
         Text("임시"),
         IconButton(
             onPressed: () {
-              getData();
+              // getData();
+              postData();
             },
             icon: Icon(Icons.star_border)),
         GestureDetector(

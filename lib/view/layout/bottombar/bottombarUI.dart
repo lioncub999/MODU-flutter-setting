@@ -23,14 +23,7 @@ class BottomBarUI extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             label: 'shop',
-            icon: CustomNavItem(
-              icon: Icons.shopping_bag_outlined,
-              index: 0,
-              onTap: (i) => {
-                print(i)
-              },
-
-            ),
+            icon: Icon(Icons.shopping_bag_outlined),
             activeIcon: Icon(Icons.shopping_bag),
           ),
           BottomNavigationBarItem(

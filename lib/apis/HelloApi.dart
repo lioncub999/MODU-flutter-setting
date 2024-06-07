@@ -7,8 +7,8 @@ class HelloApi {
     return response;
   }
   
-  static Future<Response> postHello(url, data) async {
-    var response = await ApiService.postRequest(url, data);
+  static Future<Response> postHello(data) async {
+    var response = await ApiService.postRequest('/auth/login', data);
     return response;
   }
 }
