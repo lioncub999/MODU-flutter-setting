@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -12,6 +13,8 @@ import 'package:modu_flutter/view/layout/appbar/appbarUI.dart';
 import 'package:modu_flutter/view/layout/bottombar/bottombarUI.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'apis/AuthApi.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 환경 초기화
@@ -61,33 +64,47 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
     checkTokenValid();
   }
   //
   checkTokenValid() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('jwtToken');
+    var loginId = prefs.getString('loginId');
     if (token == null) {
       context.read<MainStore>().setIsLogin(1);
     } else {
-      context.read<MainStore>().setIsLogin(2);
+      try {
+        final result = await AuthApi.isValidToken({"token":token, "loginId":loginId});
+        bool isValid = jsonDecode(result.body);
+        if (isValid) {
+          context.read<MainStore>().setIsLogin(2);
+        } else {
+          context.read<MainStore>().setIsLogin(1);
+        }
+      } catch(e) {
+        context.read<MainStore>().setIsLogin(1);
+        prefs.remove('jwtToken');
+        prefs.remove('loginId');
+        _showAlert();
+      }
     }
   }
 
-  var fromGetData;
-  var fromPostData;
-
-  setFromGetData(data) {
-    setState(() {
-      fromGetData = data;
-    });
-  }
-
-  setFromPostData(data) {
-    setState(() {
-      fromPostData = data;
-    });
+  void _showAlert() {
+    showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text("알림"),
+            content: Text("인증 정보가 만료되었습니다."),
+            actions: [
+              CupertinoDialogAction(isDefaultAction: true, child: Text("확인"), onPressed: () {
+                Navigator.pop(context);
+              })
+            ],
+          );
+        });
   }
 
   @override
@@ -95,8 +112,8 @@ class _MyAppState extends State<MyApp> {
     return [
       // TODO : 앱 실행 로그인 체크 default
       Scaffold(
-        body: Container(
-          child: Text("로그인 체크화면입니다."),
+        body: Center(
+          child: Image.asset('ralo.jpeg'),
         ),
       )
       ,
@@ -110,11 +127,9 @@ class _MyAppState extends State<MyApp> {
       // TODO: 로그인 완료시 메인
       Scaffold(
         appBar: AppBarUI(
-            title: "TITLE",
-            setFromGetData: setFromGetData,
-            setFromPostData: setFromPostData),
+            title: "TITLE"),
         body: [
-          Mainpage(fromGetData: fromGetData, fromPostData: fromPostData),
+          Mainpage(),
           Subpage(),
           Sub1page()
         ][context.watch<MainStore>().tapState],

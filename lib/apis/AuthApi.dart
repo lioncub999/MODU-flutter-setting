@@ -6,4 +6,9 @@ class AuthApi {
     var response = await ApiService.postRequest("/auth/login", data);
     return response;
   }
+
+  static Future<Response> isValidToken(data) async {
+    var response = await ApiService.postRequest("/auth/isValidToken", data);
+    return response;
+  }
 }

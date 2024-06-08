@@ -9,38 +9,13 @@ class AppBarUI extends StatelessWidget implements PreferredSizeWidget {
   const AppBarUI(
       {super.key,
       required this.title,
-      this.bottom,
-      this.setFromGetData,
-      this.setFromPostData});
+      this.bottom});
 
   final String title;
   final PreferredSizeWidget? bottom;
-  final setFromGetData;
-  final setFromPostData;
 
   @override
   Widget build(BuildContext context) {
-    void getData() async {
-      try {
-        final response = await HelloApi.getHello();
-        final data = response.body;
-        setFromGetData(data);
-        print(data);
-      } catch (e) {
-        print(e.toString());
-      }
-    }
-
-    void postData() async {
-      try {
-        final response = await HelloApi.postHello({'loginId': 'asd', 'loginPw': 'asd'});
-        final data = jsonDecode(response.body);
-        setFromPostData(data);
-        print(data);
-      } catch (e) {
-        print(e.toString());
-      }
-    }
 
     return AppBar(
       backgroundColor: Colors.blue,
@@ -50,7 +25,6 @@ class AppBarUI extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
             onPressed: () {
               // getData();
-              getData();
             },
             icon: Icon(Icons.star_border)),
         GestureDetector(
