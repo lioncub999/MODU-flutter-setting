@@ -8,7 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../main.dart';
 
 class Login extends StatefulWidget {
-  const Login({super.key});
+  const Login({super.key, this.setLoginOrRegister});
+  final setLoginOrRegister;
 
   @override
   State<Login> createState() => _LoginState();
@@ -73,20 +74,42 @@ class _LoginState extends State<Login> {
           ),
           Container(
               width: 300,
-              height: 50,
-              child: TextButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
-                  onPressed: () {
-                    Login({
-                      "loginId" : loginId,
-                      "loginPw" : loginPw
-                    });
-                  },
-                  child: Text(
-                    "로그인",
-                    style: TextStyle(color: Colors.white),
-                  )))
+              child: Column(
+                children: [
+                  Container(
+                    width: 300,
+                    height: 50,
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                        onPressed: () {
+                          Login({
+                            "loginId" : loginId,
+                            "loginPw" : loginPw
+                          });
+                        },
+                        child: Text(
+                          "로그인",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  ),
+                  Container(
+                    width: 300,
+                    height: 50,
+                    child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                        onPressed: () {
+                          widget.setLoginOrRegister(1);
+                        },
+                        child: Text(
+                          "회원가입",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  ),
+                ],
+              ))
         ],
       ),
     );

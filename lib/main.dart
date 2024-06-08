@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:modu_flutter/view/auth/login.dart';
+import 'package:modu_flutter/view/auth/register.dart';
 import 'package:modu_flutter/view/bodycont/main/mainpage.dart';
 import 'package:modu_flutter/view/bodycont/sub/sub1page.dart';
 import 'package:modu_flutter/view/bodycont/sub/subpage.dart';
@@ -41,11 +42,14 @@ Future<void> main() async {
 
 class MainStore extends ChangeNotifier {
   int tapState = 0;
+
   setTapState(tap) {
     tapState = tap;
     notifyListeners();
   }
+
   int isLogin = 0;
+
   setIsLogin(state) {
     isLogin = (state);
     notifyListeners();
@@ -60,14 +64,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     super.initState();
     checkTokenValid();
   }
+
   //
-  checkTokenValid() async{
+  checkTokenValid() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('jwtToken');
     var loginId = prefs.getString('loginId');
@@ -75,14 +79,15 @@ class _MyAppState extends State<MyApp> {
       context.read<MainStore>().setIsLogin(1);
     } else {
       try {
-        final result = await AuthApi.isValidToken({"token":token, "loginId":loginId});
+        final result =
+            await AuthApi.isValidToken({"token": token, "loginId": loginId});
         bool isValid = jsonDecode(result.body);
         if (isValid) {
           context.read<MainStore>().setIsLogin(2);
         } else {
           context.read<MainStore>().setIsLogin(1);
         }
-      } catch(e) {
+      } catch (e) {
         context.read<MainStore>().setIsLogin(1);
         prefs.remove('jwtToken');
         prefs.remove('loginId');
@@ -99,12 +104,23 @@ class _MyAppState extends State<MyApp> {
             title: Text("알림"),
             content: Text("인증 정보가 만료되었습니다."),
             actions: [
-              CupertinoDialogAction(isDefaultAction: true, child: Text("확인"), onPressed: () {
-                Navigator.pop(context);
-              })
+              CupertinoDialogAction(
+                  isDefaultAction: true,
+                  child: Text("확인"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  })
             ],
           );
         });
+  }
+
+  var loginOrRegister = 0;
+
+  setLoginOrRegister(page) {
+    setState(() {
+      loginOrRegister = page;
+    });
   }
 
   @override
@@ -115,19 +131,20 @@ class _MyAppState extends State<MyApp> {
         body: Center(
           child: Image.asset('ralo.jpeg'),
         ),
-      )
-      ,
-      // TODO: 로그인 화면
+      ),
+      // TODO: 로그인, 회원가입 화면
       GestureDetector(
         onTap: FocusScope.of(context).unfocus,
         child: Scaffold(
-          body: Login()
-        ),
+            body: [
+          Login(setLoginOrRegister: setLoginOrRegister),
+          Register()
+        ][loginOrRegister]),
       ),
       // TODO: 로그인 완료시 메인
       Scaffold(
         appBar: AppBarUI(
-            title: "TITLE",
+          title: "TITLE",
         ),
         body: [
           Mainpage(),
