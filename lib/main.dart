@@ -127,7 +127,8 @@ class _MyAppState extends State<MyApp> {
       // TODO: 로그인 완료시 메인
       Scaffold(
         appBar: AppBarUI(
-            title: "TITLE"),
+            title: "TITLE",
+        ),
         body: [
           Mainpage(),
           Subpage(),
