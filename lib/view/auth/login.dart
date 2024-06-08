@@ -25,7 +25,7 @@ class _LoginState extends State<Login> {
       final newToken = data['token'];
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('jwtToken', newToken);
-      context.read<MainStore>().setIsLogin(1);
+      context.read<MainStore>().setIsLogin(2);
     } catch(e) {
       print(e);
     }

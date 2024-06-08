@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -56,17 +57,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
   @override
   void initState() {
     super.initState();
-  }
 
+    checkTokenValid();
+  }
+  //
   checkTokenValid() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('jwtToken');
-    if (token != null) {
-      print(token);
+    if (token == null) {
       context.read<MainStore>().setIsLogin(1);
+    } else {
+      context.read<MainStore>().setIsLogin(2);
     }
   }
 
@@ -88,6 +93,13 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return [
+      // TODO : 앱 실행 로그인 체크 default
+      Scaffold(
+        body: Container(
+          child: Text("로그인 체크화면입니다."),
+        ),
+      )
+      ,
       // TODO: 로그인 화면
       GestureDetector(
         onTap: FocusScope.of(context).unfocus,

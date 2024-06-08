@@ -3,7 +3,7 @@ import 'package:modu_flutter/utils/axios.dart';
 
 class HelloApi {
   static Future<Response> getHello() async{
-    var response = await ApiService.getRequest('/test');
+    var response = await ApiService.getRequest('/hello');
     return response;
   }
   

@@ -50,7 +50,7 @@ class AppBarUI extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
             onPressed: () {
               // getData();
-              postData();
+              getData();
             },
             icon: Icon(Icons.star_border)),
         GestureDetector(
