@@ -115,14 +115,6 @@ class _MyAppState extends State<MyApp> {
         });
   }
 
-  var loginOrRegister = 0;
-
-  setLoginOrRegister(page) {
-    setState(() {
-      loginOrRegister = page;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return [
@@ -136,10 +128,7 @@ class _MyAppState extends State<MyApp> {
       GestureDetector(
         onTap: FocusScope.of(context).unfocus,
         child: Scaffold(
-            body: [
-          Login(setLoginOrRegister: setLoginOrRegister),
-          Register()
-        ][loginOrRegister]),
+          body: Login()),
       ),
       // TODO: 로그인 완료시 메인
       Scaffold(

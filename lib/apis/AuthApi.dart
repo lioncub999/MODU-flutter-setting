@@ -11,4 +11,8 @@ class AuthApi {
     var response = await ApiService.postRequest("/auth/isValidToken", data);
     return response;
   }
+  static Future<Response> register(data) async {
+    var response = await ApiService.postRequest("/auth/register", data);
+    return response;
+  }
 }

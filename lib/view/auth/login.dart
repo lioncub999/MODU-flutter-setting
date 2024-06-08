@@ -1,15 +1,16 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modu_flutter/apis/AuthApi.dart';
+import 'package:modu_flutter/view/auth/register.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
 
 class Login extends StatefulWidget {
-  const Login({super.key, this.setLoginOrRegister});
-  final setLoginOrRegister;
+  const Login({super.key});
 
   @override
   State<Login> createState() => _LoginState();
@@ -101,7 +102,10 @@ class _LoginState extends State<Login> {
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(Colors.blue)),
                         onPressed: () {
-                          widget.setLoginOrRegister(1);
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(builder: (context) => Register()),
+                          );
                         },
                         child: Text(
                           "회원가입",
