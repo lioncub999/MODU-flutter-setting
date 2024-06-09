@@ -32,6 +32,12 @@ String timeAgo(DateTime date) {
 
 class _MainpageState extends State<Mainpage> {
   @override
+  void initState() {
+    super.initState();
+    context.read<MainStore>().getTalkList();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (context.watch<MainStore>().talkList != null) {
       return ListView.builder(
@@ -96,7 +102,30 @@ class _MainpageState extends State<Mainpage> {
                     flex: 1,
                     child: Container(
                       margin: EdgeInsets.all(10),
-                      child: Image.asset("ralo.jpeg", width: 50, height: 50,),
+                      child:
+                      Image.network(
+                        'https://modu-s3-dev.s3.ap-northeast-2.amazonaws.com/2024/06/03/1717395093529_%ED%8C%8C%EC%9D%BC%EC%9D%B4%EB%A6%84PR-240603L7466749476',
+                        width: 40,
+                        height: 40,
+                        fit: BoxFit.fill,
+                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          }
+                        },
+                        errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                          return Center(
+                            child: Text('Failed to load image'),
+                          );
+                        })
                     ),
                   ),
                   Expanded(
