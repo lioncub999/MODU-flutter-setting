@@ -18,18 +18,18 @@ class BottomBarUI extends StatelessWidget {
         items: [
           BottomNavigationBarItem(
             label: 'home',
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
+            icon: Icon(Icons.assignment_outlined),
+            activeIcon: Icon(Icons.assignment),
           ),
           BottomNavigationBarItem(
             label: 'shop',
-            icon: Icon(Icons.shopping_bag_outlined),
-            activeIcon: Icon(Icons.shopping_bag),
+            icon: Icon(Icons.mode_comment_outlined),
+            activeIcon: Icon(Icons.mode_comment),
           ),
           BottomNavigationBarItem(
             label: 'menu',
-            icon: Icon(Icons.menu_outlined),
-            activeIcon: Icon(Icons.menu),
+            icon: Icon(Icons.more_horiz_outlined),
+            activeIcon: Icon(Icons.more_horiz),
           )
         ]);
   }

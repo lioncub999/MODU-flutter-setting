@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modu_flutter/apis/HelloApi.dart';
 import 'package:modu_flutter/main.dart';
-import 'package:modu_flutter/view/customWidget/navigator.dart';
+import 'package:modu_flutter/view/bodycont/main/talkwrite.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,24 +27,21 @@ class AppBarUI extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.blue,
-      title: Text(title),
       actions: [
-        Text("임시"),
         IconButton(
             onPressed: () {
               logout();
               context.read<MainStore>().setIsLogin(1);
             },
             icon: Icon(Icons.star_border)),
-        GestureDetector(
-          child: Icon(Icons.add_box_outlined),
-          onTap: () {
-            Navigator.push(
-              context,
-              CupertinoPageRoute(builder: (context) => CustomNavigator()),
-            );
-          },
-        ),
+        IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(builder: (context) => TalkWrite()),
+              );
+            },
+            icon: Icon(Icons.edit))
       ],
     );
   }

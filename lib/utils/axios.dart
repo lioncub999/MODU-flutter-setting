@@ -12,7 +12,9 @@ class ApiService {
     var token = prefs.getString('jwtToken');
 
     final uri = Uri.parse(apiUrl+url);
-    final headers = <String, String>{};
+    final headers = <String, String>{
+      'Content-Type': 'application/json',
+    };
     if (token != null) {
       headers['Authorization'] = 'Bearer $token';
     }

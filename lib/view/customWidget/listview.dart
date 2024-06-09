@@ -6,7 +6,7 @@ class CustomListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: 8,
+        itemCount: 1,
         itemBuilder: (c, i) {
           return Container(
               width: double.infinity,

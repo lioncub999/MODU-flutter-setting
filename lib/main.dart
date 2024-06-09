@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:modu_flutter/view/auth/login.dart';
-import 'package:modu_flutter/view/auth/register.dart';
 import 'package:modu_flutter/view/bodycont/main/mainpage.dart';
 import 'package:modu_flutter/view/bodycont/sub/sub1page.dart';
 import 'package:modu_flutter/view/bodycont/sub/subpage.dart';
@@ -16,6 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'apis/AuthApi.dart';
+import 'apis/TalkApi.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 환경 초기화
@@ -54,6 +54,13 @@ class MainStore extends ChangeNotifier {
     isLogin = (state);
     notifyListeners();
   }
+
+  var talkList;
+  getTalkList() async {
+    final result = await TalkApi.getTalkList();
+    talkList = jsonDecode(utf8.decode(result.bodyBytes));
+    notifyListeners();
+  }
 }
 
 class MyApp extends StatefulWidget {
@@ -68,6 +75,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     checkTokenValid();
+    context.read<MainStore>().getTalkList();
   }
 
   //
@@ -127,8 +135,7 @@ class _MyAppState extends State<MyApp> {
       // TODO: 로그인, 회원가입 화면
       GestureDetector(
         onTap: FocusScope.of(context).unfocus,
-        child: Scaffold(
-          body: Login()),
+        child: Scaffold(body: Login()),
       ),
       // TODO: 로그인 완료시 메인
       Scaffold(
