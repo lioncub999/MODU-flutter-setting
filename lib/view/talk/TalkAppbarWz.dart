@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modu_flutter/main.dart';
@@ -17,10 +15,11 @@ class TalkAppbarWz extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final PreferredSizeWidget? bottom;
 
+  //TODO : 로그아웃기능 (이후 이동할거임)
   logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('jwtToken');
-    prefs.remove('loginId');
+    await prefs.remove('jwtToken');
+    await prefs.remove('loginId');
   }
 
   @override
@@ -31,14 +30,14 @@ class TalkAppbarWz extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
             onPressed: () {
               logout();
-              context.read<MainStore>().setIsLogin(1);
+              context.read<MainStore>().setIsLogin(1); // 로그아웃 후 로그인 페이지로 이동
             },
             icon: Icon(Icons.star_border)),
         IconButton(
             onPressed: () {
               Navigator.push(
                 context,
-                CupertinoPageRoute(builder: (context) => TalkWritePage()),
+                CupertinoPageRoute(builder: (context) => TalkWritePage()), // 토크 입력 페이지로 Navigate
               );
             },
             icon: Icon(Icons.edit))
