@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modu_flutter/main.dart';
-import 'package:modu_flutter/view/bodycont/main/talkwrite.dart';
+import 'package:modu_flutter/view/talk/TalkWritePage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AppBarUI extends StatelessWidget implements PreferredSizeWidget {
-  const AppBarUI({
+class TalkAppbarWz extends StatelessWidget implements PreferredSizeWidget {
+  const TalkAppbarWz({
     super.key,
     required this.title,
     this.bottom,
@@ -38,7 +38,7 @@ class AppBarUI extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                CupertinoPageRoute(builder: (context) => TalkWrite()),
+                CupertinoPageRoute(builder: (context) => TalkWritePage()),
               );
             },
             icon: Icon(Icons.edit))

@@ -3,14 +3,14 @@ import 'package:modu_flutter/apis/TalkApi.dart';
 import 'package:modu_flutter/main.dart';
 import 'package:provider/provider.dart';
 
-class TalkWrite extends StatefulWidget {
-  const TalkWrite({super.key});
+class TalkWritePage extends StatefulWidget {
+  const TalkWritePage({super.key});
 
   @override
-  State<TalkWrite> createState() => _BoardWriteState();
+  State<TalkWritePage> createState() => _BoardWriteState();
 }
 
-class _BoardWriteState extends State<TalkWrite> {
+class _BoardWriteState extends State<TalkWritePage> {
   var talkCont;
 
   @override
@@ -22,7 +22,7 @@ class _BoardWriteState extends State<TalkWrite> {
         title: Icon(Icons.edit),
         actions: [IconButton(onPressed: () async {
           await TalkApi.insertTalk({"talkCont" : talkCont});
-          await context.read<MainStore>().getTalkList();
+          await context.read<TalkStore>().getTalkList();
           Navigator.pop(context);
         }, icon: Icon(Icons.check))],
       ),

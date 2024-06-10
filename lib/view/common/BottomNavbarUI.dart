@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:modu_flutter/main.dart';
 import 'package:provider/provider.dart';
 
-class BottomBarUI extends StatelessWidget {
-  const BottomBarUI({super.key});
+class BottomNavbarUI extends StatelessWidget {
+  const BottomNavbarUI({super.key});
 
   @override
   Widget build(BuildContext context) {
