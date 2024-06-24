@@ -27,7 +27,7 @@ import 'package:modu_flutter/view/common/BottomNavbarUI.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'apis/AuthApi.dart';
+import 'apis/Auth/AuthApi.dart';
 import 'apis/TalkApi.dart';
 
 Future<void> main() async {

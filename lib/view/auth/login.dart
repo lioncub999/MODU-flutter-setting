@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modu_flutter/apis/AuthApi.dart';
+import 'package:modu_flutter/apis/Auth/AuthApi.dart';
+import 'package:modu_flutter/apis/Auth/AuthModel.dart';
 import 'package:modu_flutter/view/auth/register.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,17 +18,23 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  String loginId = "";
-  String loginPw = "";
+  String userLoginId = "";
+  String userPw = "";
 
   void Login(loginInfo) async{
     try {
-      final response = await AuthApi.login(loginInfo);
+      LoginData loginData = new LoginData();
+      loginData.userLoginId = userLoginId;
+      loginData.userPw = userPw;
+
+      final response = await AuthApi.login(loginData.toJson());
+
       final data = jsonDecode(response.body);
-      final newToken = data['token'];
+      final newToken = data['result'];
+      print(newToken);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('jwtToken', newToken);
-      await prefs.setString('loginId', loginId);
+      await prefs.setString('userLoginId', userLoginId);
       context.read<MainStore>().setIsLogin(2);
     } catch(e) {
       print(e);
@@ -52,7 +59,7 @@ class _LoginState extends State<Login> {
               ),
               onChanged: (value) {
                 setState(() {
-                  loginId = value;
+                  userLoginId = value;
                 });
               },
             ),
@@ -68,7 +75,7 @@ class _LoginState extends State<Login> {
               ),
               onChanged: (value) {
                 setState(() {
-                  loginPw = value;
+                  userPw = value;
                 });
               },
             ),
@@ -86,8 +93,8 @@ class _LoginState extends State<Login> {
                             backgroundColor: MaterialStateProperty.all(Colors.blue)),
                         onPressed: () {
                           Login({
-                            "loginId" : loginId,
-                            "loginPw" : loginPw
+                            "userLoginId" : userLoginId,
+                            "userPw" : userPw
                           });
                         },
                         child: Text(

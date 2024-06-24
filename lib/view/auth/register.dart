@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:modu_flutter/apis/AuthApi.dart';
+import 'package:modu_flutter/apis/Auth/AuthApi.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
