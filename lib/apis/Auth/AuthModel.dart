@@ -1,4 +1,6 @@
-class LoginData {
+import 'package:modu_flutter/apis/ApiResponse.dart';
+
+class LoginData extends ApiResponse{
   late String userLoginId;
   late String userPw;
 
@@ -8,7 +10,7 @@ class LoginData {
   };
 }
 
-class AuthInfo {
+class AuthInfo extends ApiResponse{
   late String token;
   late String loginId;
 

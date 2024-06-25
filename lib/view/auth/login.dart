@@ -27,14 +27,15 @@ class _LoginState extends State<Login> {
       loginData.userLoginId = userLoginId;
       loginData.userPw = userPw;
 
-      final response = await AuthApi.login(loginData.toJson());
+      final AuthInfo authInfo = await AuthApi.login(loginData.toJson());
+      final newToken = authInfo.token;
 
-      final data = jsonDecode(response.body);
-      final newToken = data['result'];
-      print(newToken);
+      // TODO: 토큰 저장
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('jwtToken', newToken);
       await prefs.setString('userLoginId', userLoginId);
+
+      // TODO: 로그인 완료 후 페이지 이동
       context.read<MainStore>().setIsLogin(2);
     } catch(e) {
       print(e);

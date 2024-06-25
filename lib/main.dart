@@ -19,6 +19,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:modu_flutter/apis/Auth/AuthModel.dart';
 import 'package:modu_flutter/view/auth/login.dart';
 import 'package:modu_flutter/view/talk/TalkListPage.dart';
 import 'package:modu_flutter/view/chat/ChatPage.dart';
@@ -75,7 +76,6 @@ class MainStore extends ChangeNotifier {
 // TODO: TalkStore (Provider)
 class TalkStore extends ChangeNotifier {
   var talkList;
-
   getTalkList() async {
     final result = await TalkApi.getTalkList();
     talkList = jsonDecode(utf8.decode(result.bodyBytes));
@@ -94,12 +94,13 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    checkTokenValid();
+    checkTokenValidation();
   }
 
   // TODO : 현재 토큰 검증
-  checkTokenValid() async {
+  checkTokenValidation() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     var token = prefs.getString('jwtToken');
     var loginId = prefs.getString('loginId');
     if (token == null) {
@@ -148,7 +149,7 @@ class _MyAppState extends State<MyApp> {
       // TODO : 앱 실행 로그인 체크 default
       Scaffold(
         body: Center(
-          child: Image.asset('ralo.jpeg'), // 로고 이미지 넣으셈
+          child: Text("메인 페이지"), // 로고 이미지 넣으셈
         ),
       ),
       // TODO: 로그인, 회원가입 화면
