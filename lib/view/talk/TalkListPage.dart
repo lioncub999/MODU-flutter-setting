@@ -4,6 +4,8 @@ import 'package:modu_flutter/view/talk/TalkAppbarWz.dart';
 import 'package:modu_flutter/view/talk/TalkListWz.dart';
 import 'package:provider/provider.dart';
 
+import '../../provider/TalkStore.dart';
+
 class TalkListPage extends StatefulWidget {
   const TalkListPage({super.key});
 

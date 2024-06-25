@@ -4,6 +4,8 @@ import 'package:modu_flutter/apis/TalkApi.dart';
 import 'package:modu_flutter/main.dart';
 import 'package:provider/provider.dart';
 
+import '../../provider/TalkStore.dart';
+
 class TalkWritePage extends StatefulWidget {
   const TalkWritePage({super.key});
 

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/src/response.dart';
 import 'package:modu_flutter/apis/Auth/AuthModel.dart';
-import 'package:modu_flutter/utils/axios.dart';
+import 'package:modu_flutter/utils/Axios.dart';
 
 class AuthApi {
   static Future<AuthInfo> login(data) async {
@@ -11,17 +11,21 @@ class AuthApi {
 
     AuthInfo authInfo = new AuthInfo();
     authInfo.token = result['token'];
-    authInfo.loginId = result['loginId'];
+    authInfo.userLoginId = result['userLoginId'];
 
     return authInfo;
   }
 
-  static Future<Response> isValidToken(data) async {
+  static Future<AuthInfo> isValidToken(data) async {
     var response = await ApiService.postRequest("/auth/isValidToken", data);
-    print(response);
+    var result = jsonDecode(response.body);
 
-    return response;
+    AuthInfo authInfo = new AuthInfo();
+    authInfo.ok = result['ok'];
+
+    return authInfo;
   }
+
   static Future<Response> register(data) async {
     var response = await ApiService.postRequest("/auth/register", data);
     return response;

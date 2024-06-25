@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:modu_flutter/apis/Auth/AuthApi.dart';
 
+import '../../ui/common/Inputs.dart';
+
 class Register extends StatefulWidget {
   const Register({super.key});
 
@@ -9,84 +11,57 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  var registerLginId;
-  var registerNm;
-  var registerEmail;
-  var registerPw;
+  var userLoginId;
+  var userNm;
+  var userEmail;
+  var userPw;
   var userGender;
   DateTime? userBirth;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-
-      ),
-      body: Center(
+    return GestureDetector(
+      onTap: FocusScope.of(context).unfocus,
+      child: Scaffold(
+        appBar: AppBar(),
+        body: Center(
+            child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: 300,
-                margin: EdgeInsets.only(bottom: 20),
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'UserId',
-                  ),
-                  onChanged: (value) {
+              UIInput(
+                  labelText: "UserId",
+                  obscureText: false,
+                  onChangedFunc: (value) {
                     setState(() {
-                      registerLginId = value;
+                      userLoginId = value;
                     });
-                  },
-                ),
-              ),
-              Container(
-                width: 300,
-                margin: EdgeInsets.only(bottom: 20),
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'UserNm',
-                  ),
-                  onChanged: (value) {
+                  }),
+              UIInput(
+                  labelText: "UserNm",
+                  obscureText: false,
+                  onChangedFunc: (value) {
                     setState(() {
-                      registerNm = value;
+                      userNm = value;
                     });
-                  },
-                ),
-              ),
-              Container(
-                width: 300,
-                margin: EdgeInsets.only(bottom: 20),
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
-                  ),
-                  onChanged: (value) {
+                  }),
+              UIInput(
+                  labelText: "Email",
+                  obscureText: false,
+                  onChangedFunc: (value) {
                     setState(() {
-                      registerEmail = value;
+                      userEmail = value;
                     });
-                  },
-                ),
-              ),
-              Container(
-                width: 300,
-                margin: EdgeInsets.only(bottom: 20),
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                  ),
-                  onChanged: (value) {
+                  }),
+              UIInput(
+                  labelText: "Password",
+                  obscureText: true,
+                  onChangedFunc: (value) {
                     setState(() {
-                      registerPw = value;
+                      userPw = value;
                     });
-                  },
-                ),
-              ),
+                  }),
               ListTile(
                 title: Text("남자"),
                 leading: Radio(
@@ -111,20 +86,17 @@ class _RegisterState extends State<Register> {
                   },
                 ),
               ),
-              Text(userBirth != null?
-                  userBirth.toString().split(" ")[0] :
-                  "날짜 선택 안됨"
-              ),
+              Text(userBirth != null ? userBirth.toString().split(" ")[0] : "날짜 선택 안됨"),
               ElevatedButton(
                   onPressed: () {
                     showDatePicker(
-                        context: context,
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime.now(),)
-                        .then((selectedDate) {
-                          setState(() {
-                            userBirth = selectedDate;
-                          });
+                      context: context,
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime.now(),
+                    ).then((selectedDate) {
+                      setState(() {
+                        userBirth = selectedDate;
+                      });
                     });
                   },
                   child: Text("날짜 선택")),
@@ -135,16 +107,15 @@ class _RegisterState extends State<Register> {
                   height: 50,
                   margin: EdgeInsets.only(bottom: 10, top: 10),
                   child: TextButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue)),
                       onPressed: () {
                         AuthApi.register({
-                          "registerLginId" : registerLginId,
-                          "registerPw" : registerPw,
-                          "registerNm" : registerNm,
-                          "registerEmail" : registerEmail,
-                          "userGender" : userGender,
-                          "userBirth" : userBirth.toString().split(" ")[0]
+                          "userLoginId": userLoginId,
+                          "userPw": userPw,
+                          "userNm": userNm,
+                          "userEmail": userEmail,
+                          "userGender": userGender,
+                          "userBirth": userBirth.toString().split(" ")[0]
                         });
                         Navigator.pop(context);
                       },
@@ -155,7 +126,8 @@ class _RegisterState extends State<Register> {
                 ),
               )
             ],
-          )
+          ),
+        )),
       ),
     );
   }

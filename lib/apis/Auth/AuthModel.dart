@@ -1,8 +1,8 @@
-import 'package:modu_flutter/apis/ApiResponse.dart';
+import '../ApiResponse.dart';
 
 class LoginData extends ApiResponse{
-  late String userLoginId;
-  late String userPw;
+  String? userLoginId;
+  String? userPw;
 
   Map<String, dynamic> toJson() => {
     'userLoginId': userLoginId,
@@ -11,11 +11,11 @@ class LoginData extends ApiResponse{
 }
 
 class AuthInfo extends ApiResponse{
-  late String token;
-  late String loginId;
+  String? token;
+  String? userLoginId;
 
   Map<String, dynamic> toJson() => {
     'token': token,
-    'loginId' : loginId,
+    'userLoginId' : userLoginId,
   };
 }

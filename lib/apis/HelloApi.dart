@@ -1,5 +1,5 @@
 import 'package:http/src/response.dart';
-import 'package:modu_flutter/utils/axios.dart';
+import 'package:modu_flutter/utils/Axios.dart';
 
 class HelloApi {
   static Future<Response> getHello() async{

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../main.dart';
+import '../../provider/TalkStore.dart';
 import '../common/UserProfilePage.dart';
 
 class TalkListWz extends StatelessWidget {

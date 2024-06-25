@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:modu_flutter/main.dart';
 import 'package:provider/provider.dart';
 
+import '../../provider/MainStore.dart';
+
 class BottomNavbarUI extends StatelessWidget {
   const BottomNavbarUI({super.key});
 

@@ -8,7 +8,7 @@
 //TODO:┃
 //TODO:┃  <Providers>
 //TODO:┃     MainStore 하단바:tapState, 로그인 상태:isLogin
-//TODO:┃     TalkStore 토크 리스트 관리:talkList
+//TODO:┃     TalkStore.dart 토크 리스트 관리:talkList
 //TODO:┃
 //TODO:┃
 //TODO:┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -20,28 +20,28 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:modu_flutter/apis/Auth/AuthModel.dart';
+import 'package:modu_flutter/provider/MainStore.dart';
+import 'package:modu_flutter/provider/TalkStore.dart';
+import 'package:modu_flutter/utils/CupertinoDialog.dart';
 import 'package:modu_flutter/view/auth/login.dart';
-import 'package:modu_flutter/view/talk/TalkListPage.dart';
 import 'package:modu_flutter/view/chat/ChatPage.dart';
 import 'package:modu_flutter/view/setting/SettingPage.dart';
 import 'package:modu_flutter/view/common/BottomNavbarUI.dart';
+import 'package:modu_flutter/view/talk/TalkListPage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'apis/Auth/AuthApi.dart';
-import 'apis/TalkApi.dart';
 
 Future<void> main() async {
   // TODO: 플러터 환경 초기화
   WidgetsFlutterBinding.ensureInitialized();
-
   // TODO: 환경 확인 후 환경변수 세팅 (Android || iOS ?)
   if (kIsWeb) {
     await dotenv.load(fileName: '.env.web_local');
   } else if (Platform.isIOS) {
     const bool isProduction = bool.fromEnvironment('dart.vm.product');
-    await dotenv.load(
-        fileName: isProduction ? '.env.ios_prod' : '.env.ios_local');
+    await dotenv.load(fileName: isProduction ? '.env.ios_prod' : '.env.ios_local');
   }
 
   runApp(MultiProvider(
@@ -59,30 +59,6 @@ Future<void> main() async {
   ));
 }
 
-// TODO: MainStore (Provider)
-class MainStore extends ChangeNotifier {
-  int tapState = 0;
-  setTapState(tap) {
-    tapState = tap;
-    notifyListeners();
-  }
-
-  int isLogin = 0;
-  setIsLogin(state) {
-    isLogin = (state);
-    notifyListeners();
-  }
-}
-// TODO: TalkStore (Provider)
-class TalkStore extends ChangeNotifier {
-  var talkList;
-  getTalkList() async {
-    final result = await TalkApi.getTalkList();
-    talkList = jsonDecode(utf8.decode(result.bodyBytes));
-    notifyListeners();
-  }
-}
-
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -97,50 +73,28 @@ class _MyAppState extends State<MyApp> {
     checkTokenValidation();
   }
 
-  // TODO : 현재 토큰 검증
+  // TODO : 앱 실행 시 현재 토큰 검증
   checkTokenValidation() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var token = prefs.getString('jwtToken');
-    var loginId = prefs.getString('loginId');
-    if (token == null) {
-      context.read<MainStore>().setIsLogin(1); // 토큰 없으면 로그인 페이지로 이동
+    if (prefs.getString('jwtToken') == null || prefs.getString('userLoginId') == null) {
+      context.read<MainStore>().setIsLogin(1); // 토큰 null OR 유저아이디 null 이면 로그인 페이지로 이동
     } else {
-      try {
-        final result =
-            await AuthApi.isValidToken({"token": token, "loginId": loginId}); // token, loginId 로 토큰 검증 (유효 : true, 유효하지 않으면 Exception)
-        bool isValid = jsonDecode(result.body);
-        if (isValid) {
-          context.read<MainStore>().setIsLogin(2); // 토큰 유효하면 메인페이지로 이동
-        } else {
-          context.read<MainStore>().setIsLogin(1);
-        }
-      } catch (e) {
-        context.read<MainStore>().setIsLogin(1); // 토큰 검증 Exception 처리 시 로그인 페이지 보내고, token, loginId 삭제 후 알림
+      AuthInfo authInfo = new AuthInfo();
+      authInfo.token = prefs.getString('jwtToken');
+      authInfo.userLoginId = prefs.getString('userLoginId');
+
+      final AuthInfo checkValid = await AuthApi.isValidToken(authInfo.toJson()); // token, loginId 로 토큰 검증 (유효 : true, 유효하지 않으면 false)
+
+      if (checkValid.ok) {
+        context.read<MainStore>().setIsLogin(2); // 토큰 유효하면 메인페이지로 이동
+      } else {
+        context.read<MainStore>().setIsLogin(1); // 토큰 검증 false 시 로그인 페이지 보내고, token, userLoginId 삭제 후 알림
         prefs.remove('jwtToken');
-        prefs.remove('loginId');
-        _InvalidTokenAlert();
+        prefs.remove('userLoginId');
+        CupertinoDialog.showAlert(context, "알림", "인증 정보가 만료 되었습니다.", "확인");
       }
     }
-  }
-  // TODO : 토큰 유효하지 않을시 알림
-  void _InvalidTokenAlert() {
-    showCupertinoDialog(
-        context: context,
-        builder: (context) {
-          return CupertinoAlertDialog(
-            title: Text("알림"),
-            content: Text("인증 정보가 만료되었습니다. 재 로그인 해주세요."),
-            actions: [
-              CupertinoDialogAction(
-                  isDefaultAction: true,
-                  child: Text("확인"),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  })
-            ],
-          );
-        });
   }
 
   @override

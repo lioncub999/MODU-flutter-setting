@@ -5,6 +5,8 @@ import 'package:modu_flutter/view/talk/TalkWritePage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../provider/MainStore.dart';
+
 class TalkAppbarWz extends StatelessWidget implements PreferredSizeWidget {
   const TalkAppbarWz({
     super.key,
