@@ -13,7 +13,7 @@ class ApiService {
 
     final uri = Uri.parse(apiUrl+url);
     final headers = <String, String>{
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json; charset=utf-8',
     };
     if (token != null) {
       headers['Authorization'] = 'Bearer $token';
@@ -37,7 +37,7 @@ class ApiService {
 
     final uri = Uri.parse(apiUrl+url);
     final headers = <String, String>{
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json; charset=utf-8',
     };
     if (token != null) {
       headers['Authorization'] = 'Bearer $token';

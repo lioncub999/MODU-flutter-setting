@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:http/src/response.dart';
+import 'package:modu_flutter/apis/ApiResponse.dart';
 import 'package:modu_flutter/apis/Auth/AuthModel.dart';
 import 'package:modu_flutter/utils/axios/axios_utils.dart';
 
@@ -16,18 +16,23 @@ class AuthApi {
     return authInfo;
   }
 
-  static Future<AuthInfo> isValidToken(data) async {
+  static Future<ApiResponse> isValidToken(data) async {
     var response = await ApiService.postRequest("/auth/isValidToken", data);
     var result = jsonDecode(response.body);
 
-    AuthInfo authInfo = new AuthInfo();
-    authInfo.ok = result['ok'];
+    ApiResponse apiResponse = new ApiResponse();
+    apiResponse.ok = result["ok"];
 
-    return authInfo;
+    return apiResponse;
   }
 
-  static Future<Response> register(data) async {
+  static Future<ApiResponse> register(data) async {
     var response = await ApiService.postRequest("/auth/register", data);
-    return response;
+    var result = jsonDecode(response.body);
+
+    ApiResponse apiResponse = new ApiResponse();
+    apiResponse.ok = result["ok"];
+
+    return apiResponse;
   }
 }

@@ -10,6 +10,24 @@ class LoginData extends ApiResponse{
   };
 }
 
+class RegisterData extends ApiResponse {
+  String? userLoginId;
+  String? userPw;
+  String? userNm;
+  String? userEmail;
+  String? userGender;
+  String? userBirthday;
+
+  Map<String, dynamic> toJson() => {
+    'userLoginId' :userLoginId,
+    'userPw' : userPw,
+    'userNm' : userNm,
+    'userEmail' : userEmail,
+    'userGender' : userGender,
+    'userBirthday' : userBirthday,
+  };
+}
+
 class AuthInfo extends ApiResponse{
   String? token;
   String? userLoginId;

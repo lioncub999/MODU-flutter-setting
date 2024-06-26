@@ -1,5 +1,6 @@
 // auth_utils.dart
 import 'package:flutter/material.dart';
+import 'package:modu_flutter/apis/ApiResponse.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ Future<void> checkTokenValidation(BuildContext context) async {
     authInfo.token = prefs.getString('jwtToken');
     authInfo.userLoginId = prefs.getString('userLoginId');
 
-    final AuthInfo checkValid = await AuthApi.isValidToken(authInfo.toJson()); // token, loginId 로 토큰 검증 (유효 : true, 유효하지 않으면 false)
+    final ApiResponse checkValid = await AuthApi.isValidToken(authInfo.toJson()); // token, loginId 로 토큰 검증 (유효 : true, 유효하지 않으면 false)
 
     if (checkValid.ok) {
       context.read<MainStore>().setIsLogin(2); // 토큰 유효하면 메인페이지로 이동

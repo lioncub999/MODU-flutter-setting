@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:modu_flutter/apis/ApiResponse.dart';
 import 'package:modu_flutter/apis/Auth/AuthApi.dart';
+import 'package:modu_flutter/apis/Auth/AuthModel.dart';
+import 'package:provider/provider.dart';
 
+import '../../provider/MainStore.dart';
 import '../../ui/common/Inputs.dart';
 
 class Register extends StatefulWidget {
@@ -16,7 +20,30 @@ class _RegisterState extends State<Register> {
   var userEmail;
   var userPw;
   var userGender;
-  DateTime? userBirth;
+  DateTime? userBirthday;
+
+  Register() async {
+    try {
+      RegisterData registerData = new RegisterData();
+      registerData.userLoginId = userLoginId;
+      registerData.userPw = userPw;
+      registerData.userNm = userNm;
+      registerData.userEmail = userEmail;
+      registerData.userGender = userGender;
+      registerData.userBirthday = userBirthday.toString().split(" ")[0];
+
+      final ApiResponse apiResponse = await AuthApi.register(registerData.toJson());
+
+      if (apiResponse.ok) {
+        Navigator.pop(context);
+      } else {
+        print("오류");
+      }
+
+    } catch(e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +113,7 @@ class _RegisterState extends State<Register> {
                   },
                 ),
               ),
-              Text(userBirth != null ? userBirth.toString().split(" ")[0] : "날짜 선택 안됨"),
+              Text(userBirthday != null ? userBirthday.toString().split(" ")[0] : "날짜 선택 안됨"),
               ElevatedButton(
                   onPressed: () {
                     showDatePicker(
@@ -95,7 +122,7 @@ class _RegisterState extends State<Register> {
                       lastDate: DateTime.now(),
                     ).then((selectedDate) {
                       setState(() {
-                        userBirth = selectedDate;
+                        userBirthday = selectedDate;
                       });
                     });
                   },
@@ -109,15 +136,7 @@ class _RegisterState extends State<Register> {
                   child: TextButton(
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue)),
                       onPressed: () {
-                        AuthApi.register({
-                          "userLoginId": userLoginId,
-                          "userPw": userPw,
-                          "userNm": userNm,
-                          "userEmail": userEmail,
-                          "userGender": userGender,
-                          "userBirth": userBirth.toString().split(" ")[0]
-                        });
-                        Navigator.pop(context);
+                        Register();
                       },
                       child: Text(
                         "회원 가입",

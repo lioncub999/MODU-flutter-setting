@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:modu_flutter/apis/TalkApi.dart';
+import 'package:modu_flutter/apis/Talk/TalkApi.dart';
 import 'package:modu_flutter/main.dart';
 import 'package:provider/provider.dart';
 
