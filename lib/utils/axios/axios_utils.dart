@@ -7,7 +7,7 @@ class ApiService {
   static final String apiUrl = dotenv.env['API_URL'] ?? 'http:/localhost:8080';
 
   // GET 요청
-  static Future<http.Response> getRequest(String url, {String? token}) async {
+  static Future<Map<String, dynamic>> getRequest(String url, {String? token}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('jwtToken');
 
@@ -22,7 +22,9 @@ class ApiService {
     final response = await http.get(uri, headers: headers);
 
     if (response.statusCode == 200) {
-      return response;
+      String responseBody = utf8.decode(response.bodyBytes);
+      Map<String, dynamic> jsonResponse = jsonDecode(responseBody);
+      return jsonResponse;
     } else {
       throw Exception('Failed to load data');
     }
