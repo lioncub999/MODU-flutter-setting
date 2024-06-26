@@ -24,7 +24,7 @@ import 'package:modu_flutter/provider/MainStore.dart';
 import 'package:modu_flutter/provider/TalkStore.dart';
 import 'package:modu_flutter/ui/common/CupertinoDialog.dart';
 import 'package:modu_flutter/utils/auth/auth_utils.dart';
-import 'package:modu_flutter/view/auth/login.dart';
+import 'package:modu_flutter/view/auth/LoginPage.dart';
 import 'package:modu_flutter/view/chat/ChatPage.dart';
 import 'package:modu_flutter/view/setting/SettingPage.dart';
 import 'package:modu_flutter/view/common/BottomNavbarUI.dart';
@@ -71,7 +71,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    checkTokenValidation(context);
+    AuthUtils.checkTokenValidation(context);
   }
 
   @override
@@ -86,7 +86,7 @@ class _MyAppState extends State<MyApp> {
       // TODO: 로그인, 회원가입 화면
       GestureDetector(
         onTap: FocusScope.of(context).unfocus, // 인풋 영역 밖 클릭시 키보드 닫기
-        child: Scaffold(body: Login()), //
+        child: Scaffold(body: LoginPage()), //
       ),
       // TODO: 로그인 완료시 메인
       Scaffold(

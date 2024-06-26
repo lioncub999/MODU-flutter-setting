@@ -7,13 +7,9 @@ import 'package:modu_flutter/utils/axios/axios_utils.dart';
 import 'TalkModel.dart';
 
 class TalkApi {
-  static Future<String> getTalkList() async {
+  static Future<Map<String, dynamic>> getTalkList() async {
     var response = await ApiService.getRequest("/talk/list");
-    var result = utf8.decode(response.bodyBytes);
-
-    print(json.decode(result)['result']);
-
-    return result;
+    return response;
   }
 
   static Future<Response> insertTalk(data) async{

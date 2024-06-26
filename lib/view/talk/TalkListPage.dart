@@ -27,7 +27,7 @@ class _MainpageState extends State<TalkListPage> {
         appBar: TalkAppbarWz(
           title: "토크",
         ),
-        // body: TalkListWz()
+        body: TalkListWz()
       );
     } else {
       return Text("로딩중");

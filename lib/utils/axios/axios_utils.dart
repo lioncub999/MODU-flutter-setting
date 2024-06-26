@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
   static final String apiUrl = dotenv.env['API_URL'] ?? 'http:/localhost:8080';
-
   // GET 요청
   static Future<Map<String, dynamic>> getRequest(String url, {String? token}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -29,7 +28,6 @@ class ApiService {
       throw Exception('Failed to load data');
     }
   }
-
   // POST 요청
   static Future<http.Response> postRequest(
       String url, Map<String, dynamic> data,
