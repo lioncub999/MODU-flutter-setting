@@ -22,7 +22,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:modu_flutter/apis/Auth/AuthModel.dart';
 import 'package:modu_flutter/provider/MainStore.dart';
 import 'package:modu_flutter/provider/TalkStore.dart';
-import 'package:modu_flutter/utils/CupertinoDialog.dart';
+import 'package:modu_flutter/ui/common/CupertinoDialog.dart';
+import 'package:modu_flutter/utils/auth/auth_utils.dart';
 import 'package:modu_flutter/view/auth/login.dart';
 import 'package:modu_flutter/view/chat/ChatPage.dart';
 import 'package:modu_flutter/view/setting/SettingPage.dart';
@@ -70,31 +71,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    checkTokenValidation();
-  }
-
-  // TODO : 앱 실행 시 현재 토큰 검증
-  checkTokenValidation() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    if (prefs.getString('jwtToken') == null || prefs.getString('userLoginId') == null) {
-      context.read<MainStore>().setIsLogin(1); // 토큰 null OR 유저아이디 null 이면 로그인 페이지로 이동
-    } else {
-      AuthInfo authInfo = new AuthInfo();
-      authInfo.token = prefs.getString('jwtToken');
-      authInfo.userLoginId = prefs.getString('userLoginId');
-
-      final AuthInfo checkValid = await AuthApi.isValidToken(authInfo.toJson()); // token, loginId 로 토큰 검증 (유효 : true, 유효하지 않으면 false)
-
-      if (checkValid.ok) {
-        context.read<MainStore>().setIsLogin(2); // 토큰 유효하면 메인페이지로 이동
-      } else {
-        context.read<MainStore>().setIsLogin(1); // 토큰 검증 false 시 로그인 페이지 보내고, token, userLoginId 삭제 후 알림
-        prefs.remove('jwtToken');
-        prefs.remove('userLoginId');
-        CupertinoDialog.showAlert(context, "알림", "인증 정보가 만료 되었습니다.", "확인");
-      }
-    }
+    checkTokenValidation(context);
   }
 
   @override

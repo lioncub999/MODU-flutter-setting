@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// TODO: 공통 버튼
 class UIButton extends StatelessWidget {
   const UIButton({super.key, required this.height, required this.color, required this.onPressedFunc, required this.buttonText});
 
@@ -26,6 +27,7 @@ class UIButton extends StatelessWidget {
   }
 }
 
+// TODO: 공통 텍스트 필드
 class UIInput extends StatelessWidget {
   const UIInput({super.key, required this.labelText, required this.obscureText, required this.onChangedFunc});
 

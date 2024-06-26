@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/src/response.dart';
 import 'package:modu_flutter/apis/Auth/AuthModel.dart';
-import 'package:modu_flutter/utils/Axios.dart';
+import 'package:modu_flutter/utils/axios/axios_utils.dart';
 
 class AuthApi {
   static Future<AuthInfo> login(data) async {

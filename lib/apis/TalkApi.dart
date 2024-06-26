@@ -1,5 +1,5 @@
 import 'package:http/src/response.dart';
-import 'package:modu_flutter/utils/Axios.dart';
+import 'package:modu_flutter/utils/axios/axios_utils.dart';
 
 class TalkApi {
   static Future<Response> insertTalk(data) async{
