@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:modu_flutter/main.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/MainStore.dart';
 
-class BottomNavbarUI extends StatelessWidget {
-  const BottomNavbarUI({super.key});
+class BottomNavbar extends StatelessWidget {
+  const BottomNavbar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,21 +33,5 @@ class BottomNavbarUI extends StatelessWidget {
             activeIcon: Icon(Icons.more_horiz),
           )
         ]);
-  }
-}
-
-class CustomNavItem extends StatelessWidget {
-  final IconData icon;
-  final int index;
-  final Function(int) onTap;
-
-  const CustomNavItem({Key? key, required this.icon, required this.index, required this.onTap}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => onTap(index),
-      child: Icon(icon),
-    );
   }
 }

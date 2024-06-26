@@ -7,14 +7,14 @@ import 'package:provider/provider.dart';
 import '../../provider/MainStore.dart';
 import '../../ui/common/Inputs.dart';
 
-class Register extends StatefulWidget {
-  const Register({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<RegisterPage> createState() => _RegisterState();
 }
 
-class _RegisterState extends State<Register> {
+class _RegisterState extends State<RegisterPage> {
   var userLoginId;
   var userNm;
   var userEmail;

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modu_flutter/apis/Talk/TalkApi.dart';
+import 'package:modu_flutter/apis/Talk/TalkModel.dart';
 import 'package:modu_flutter/main.dart';
 import 'package:provider/provider.dart';
 
-import '../../provider/TalkStore.dart';
+import '../../../provider/TalkStore.dart';
 
 class TalkWritePage extends StatefulWidget {
   const TalkWritePage({super.key});
@@ -29,7 +30,10 @@ class _BoardWriteState extends State<TalkWritePage> {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      await TalkApi.insertTalk({"talkCont": talkCont});
+      Talk talkInput = new Talk();
+      talkInput.talkCont = talkCont;
+
+      await TalkApi.insertTalk(talkInput.toJson());
       await context.read<TalkStore>().getTalkList();
       Navigator.pop(context);
     }
@@ -45,9 +49,10 @@ class _BoardWriteState extends State<TalkWritePage> {
         backgroundColor: Colors.blue,
         title: Icon(Icons.edit),
         actions: [
+          // TODO: 토크 등록
           IconButton(
               onPressed: () async {
-                insetTalk(); // 토크 생성
+                await insetTalk();
               },
               icon: Icon(Icons.check))
         ],

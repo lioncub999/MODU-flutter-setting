@@ -2,14 +2,14 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:modu_flutter/apis/Talk/TalkModel.dart';
 
 import '../apis/Talk/TalkApi.dart';
 
 class TalkStore extends ChangeNotifier {
-  var talkList;
+  List<dynamic> talkList = [];
   getTalkList() async {
-    final result = await TalkApi.getTalkList();
-    talkList = result['result'];
+    talkList = await TalkApi.getTalkList();
     notifyListeners();
   }
 }

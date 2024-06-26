@@ -1,4 +1,3 @@
-// auth_utils.dart
 import 'package:flutter/material.dart';
 import 'package:modu_flutter/apis/ApiResponse.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +8,8 @@ import '../../apis/Auth/AuthModel.dart';
 import '../../provider/MainStore.dart';
 import '../../ui/common/CupertinoDialog.dart';
 
-class AuthUtils {
+class AuthFnc {
+  //TODO prefs 에 저장된 jwtToken, userLoginId 로 토큰 유효성 체크
   static Future<void> checkTokenValidation(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -20,8 +20,8 @@ class AuthUtils {
       authInfo.token = prefs.getString('jwtToken');
       authInfo.userLoginId = prefs.getString('userLoginId');
 
-      final ApiResponse checkValid = await AuthApi.isValidToken(authInfo.toJson()); // token, loginId 로 토큰 검증 (유효 : true, 유효하지 않으면 false)
 
+      final ApiResponse checkValid = await AuthApi.isValidToken(authInfo.toJson()); // token, loginId 로 토큰 검증 (유효 : true, 유효하지 않으면 false)
       if (checkValid.ok) {
         context.read<MainStore>().setIsLogin(2); // 토큰 유효하면 메인페이지로 이동
       } else {
@@ -32,5 +32,20 @@ class AuthUtils {
       }
     }
   }
+
+  //TODO : 로그아웃
+  static Future<void> logout(BuildContext context) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('jwtToken');
+      await prefs.remove('loginId');
+    }
+    catch (e) {
+      print(e);
+    }
+    context.read<MainStore>().setIsLogin(1); // 로그아웃 후 로그인 페이지로 이동
+  }
+
+
 }
 

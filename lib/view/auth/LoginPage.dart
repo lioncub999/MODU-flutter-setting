@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:modu_flutter/apis/Auth/AuthApi.dart';
 import 'package:modu_flutter/apis/Auth/AuthModel.dart';
 import 'package:modu_flutter/ui/common/Inputs.dart';
-import 'package:modu_flutter/view/auth/register.dart';
+import 'package:modu_flutter/view/auth/RegisterPage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -84,7 +84,7 @@ class _LoginState extends State<LoginPage> {
                       onPressedFunc: () {
                         Navigator.push(
                           context,
-                          CupertinoPageRoute(builder: (context) => Register()),
+                          CupertinoPageRoute(builder: (context) => RegisterPage()),
                         );
                       },
                       buttonText: "회원가입"),

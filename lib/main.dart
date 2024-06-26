@@ -1,38 +1,18 @@
-//TODO:┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//TODO:┃
-//TODO:┃  <CurrentPage>
-//TODO:┃     ● 앱 처음 실행 페이지 - 환경 체크 및 환경 변수 설정 (kIsWeb)
-//TODO:┃     ● initState : checkTokenValid(토큰 유효성 검증)
-//TODO:┃     ● _InvalidTokenAlert : 토큰 유효 하지 않을 시 alert
-//TODO:┃
-//TODO:┃
-//TODO:┃  <Providers>
-//TODO:┃     MainStore 하단바:tapState, 로그인 상태:isLogin
-//TODO:┃     TalkStore.dart 토크 리스트 관리:talkList
-//TODO:┃
-//TODO:┃
-//TODO:┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:modu_flutter/apis/Auth/AuthModel.dart';
+import 'package:modu_flutter/function/auth/AuthFnc.dart';
 import 'package:modu_flutter/provider/MainStore.dart';
 import 'package:modu_flutter/provider/TalkStore.dart';
-import 'package:modu_flutter/ui/common/CupertinoDialog.dart';
-import 'package:modu_flutter/utils/auth/auth_utils.dart';
 import 'package:modu_flutter/view/auth/LoginPage.dart';
 import 'package:modu_flutter/view/chat/ChatPage.dart';
 import 'package:modu_flutter/view/setting/SettingPage.dart';
-import 'package:modu_flutter/view/common/BottomNavbarUI.dart';
-import 'package:modu_flutter/view/talk/TalkListPage.dart';
+import 'package:modu_flutter/view/common/BottomNavbar.dart';
+import 'package:modu_flutter/view/talk/main/TalkPage.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'apis/Auth/AuthApi.dart';
 
 Future<void> main() async {
   // TODO: 플러터 환경 초기화
@@ -71,7 +51,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    AuthUtils.checkTokenValidation(context);
+    AuthFnc.checkTokenValidation(context);
   }
 
   @override
@@ -91,11 +71,16 @@ class _MyAppState extends State<MyApp> {
       // TODO: 로그인 완료시 메인
       Scaffold(
         body: [
-          TalkListPage(), // TalkPage
-          ChatPage(), // ChatPage
-          SettingPage() // SettingPage
+          // TODO: BottomNav - Tap - TalkPage
+          TalkPage(),
+          // TODO: BottomNav - Tap - ChatPage
+          ChatPage(),
+          // TODO: BottomNav - Tap - SettingPage
+          SettingPage(),
         ][context.watch<MainStore>().tapState],
-        bottomNavigationBar: BottomNavbarUI(), // 하단바
+
+        //TODO: 공통 BottomNavbar
+        bottomNavigationBar: BottomNavbar(),
       )
     ][context.watch<MainStore>().isLogin];
   }

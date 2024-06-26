@@ -29,7 +29,7 @@ class ApiService {
     }
   }
   // POST 요청
-  static Future<http.Response> postRequest(
+  static Future<Map<String, dynamic>> postRequest(
       String url, Map<String, dynamic> data,
       {String? token}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -50,7 +50,9 @@ class ApiService {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      return response;
+      String responseBody = utf8.decode(response.bodyBytes);
+      Map<String, dynamic> jsonResponse = jsonDecode(responseBody);
+      return jsonResponse;
     } else {
       throw Exception('Failed to post data');
     }

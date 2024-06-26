@@ -7,7 +7,7 @@ import 'package:modu_flutter/utils/axios/axios_utils.dart';
 class AuthApi {
   static Future<AuthInfo> login(data) async {
     var response = await ApiService.postRequest("/auth/login", data);
-    var result = jsonDecode(response.body)['result'];
+    var result = response['result'];
 
     AuthInfo authInfo = new AuthInfo();
     authInfo.token = result['token'];
@@ -18,20 +18,19 @@ class AuthApi {
 
   static Future<ApiResponse> isValidToken(data) async {
     var response = await ApiService.postRequest("/auth/isValidToken", data);
-    var result = jsonDecode(response.body);
+    var result = response['ok'];
 
     ApiResponse apiResponse = new ApiResponse();
-    apiResponse.ok = result["ok"];
+    apiResponse.ok = result;
 
     return apiResponse;
   }
 
   static Future<ApiResponse> register(data) async {
     var response = await ApiService.postRequest("/auth/register", data);
-    var result = jsonDecode(response.body);
 
     ApiResponse apiResponse = new ApiResponse();
-    apiResponse.ok = result["ok"];
+    apiResponse.ok = response["ok"];
 
     return apiResponse;
   }
