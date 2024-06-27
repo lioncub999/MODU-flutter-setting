@@ -1,18 +1,17 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
-import 'package:http/src/response.dart';
 import 'package:modu_flutter/utils/axios/axios_utils.dart';
 
 import '../ApiResponse.dart';
 import 'TalkModel.dart';
 
 class TalkApi {
-  static Future<dynamic> getTalkList() async {
+  static Future<List<Talk>> getTalkList() async {
     var response = await ApiService.getRequest("/talk/list");
     var result = response['result'];
 
-    return result;
+    // JSON 데이터를 List<Talk>로 변환
+    List<Talk> talkList = (result as List).map((json) => Talk.fromJson(json)).toList();
+
+    return talkList;
   }
 
   static Future<Map<String, dynamic>> insertTalk(data) async{

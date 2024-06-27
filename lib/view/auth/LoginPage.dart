@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modu_flutter/apis/Auth/AuthApi.dart';
@@ -9,7 +7,6 @@ import 'package:modu_flutter/view/auth/RegisterPage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../main.dart';
 import '../../provider/MainStore.dart';
 
 class LoginPage extends StatefulWidget {
