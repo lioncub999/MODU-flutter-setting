@@ -5,9 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modu_flutter/apis/Talk/TalkApi.dart';
 import 'package:modu_flutter/apis/Talk/TalkModel.dart';
-import 'package:modu_flutter/main.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../provider/TalkStore.dart';
 
@@ -47,12 +47,15 @@ class _BoardWriteState extends State<TalkWritePage> {
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
+      // 파일을 선택한 경우
       setState(() {
         _image = pickedFile; // 선택된 파일을 상태로 저장
       });
-      print("선택된 파일 경로: ${pickedFile.path}");
+      File file = File(pickedFile.path);
+      int fileSize = await file.length();
+      print(fileSize);
     } else {
-      print("이미지 선택 취소됨");
+      print('이미지 선택이 취소되었습니다.');
     }
   }
 
@@ -102,6 +105,31 @@ class _BoardWriteState extends State<TalkWritePage> {
 
       await TalkApi.insertTalk(talkInput.toJson());
       await context.read<TalkStore>().getTalkList();
+
+      if (_image != null) {
+        // 선택된 이미지 파일을 읽기
+        File file = File(_image!.path);
+
+        // http PUT 요청을 보낼 준비
+        var request = http.Request('PUT', Uri.parse('https://modu-s3-dev.s3.ap-northeast-2.amazonaws.com/2024/06/28/1719554362891_ttttPR-240628L5222094743?x-amz-acl=public-read&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240628T055922Z&X-Amz-SignedHeaders=host&X-Amz-Expires=599&X-Amz-Credential=AKIAYS2NWXJ5VGWUPTBG%2F20240628%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=6ea05e4e1be54441674c9741e9c57640ae674fbd16d4d841c008e8adc5946bf8'));
+        request.headers['Content-Length'] = file.lengthSync().toString();
+        request.headers['Content-Type'] = 'image/jpeg'; // 파일 유형에 맞게 설정
+
+        // 파일 내용을 요청에 추가
+        request.bodyBytes = await file.readAsBytes();
+
+        // 요청 보내기
+        var response = await request.send();
+
+        // 응답 처리
+        if (response.statusCode == 200) {
+          print('파일 업로드 성공');
+        } else {
+          print('파일 업로드 실패: ${response.reasonPhrase}');
+        }
+      } else {
+        print('이미지 선택이 취소되었습니다.');
+      }
       Navigator.pop(context);
     }
   }
@@ -151,7 +179,7 @@ class _BoardWriteState extends State<TalkWritePage> {
                       },
                     ),
                   )),
-        
+
               // TODO: 토크 내용 전체 삭제 버튼
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -166,7 +194,7 @@ class _BoardWriteState extends State<TalkWritePage> {
                       child: Text("전체삭제")),
                 ],
               ),
-        
+
               _image == null
                   ?
               // TODO: 사진 등록
@@ -196,7 +224,7 @@ class _BoardWriteState extends State<TalkWritePage> {
                     ),
                 )
               ]),
-        
+
               // TODO: 제제 대상 박스
               Container(
                 width: double.infinity,

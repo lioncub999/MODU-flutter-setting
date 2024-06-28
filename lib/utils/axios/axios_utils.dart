@@ -57,4 +57,30 @@ class ApiService {
       throw Exception('Failed to post data');
     }
   }
+
+  static Future<Map<String, dynamic>> putRequest(
+      String url, Map<String, dynamic> data,
+      {String? token}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final uri = Uri.parse(apiUrl+url);
+    final headers = <String, String>{
+      'Content-Type': 'application/json; charset=utf-8',
+    };
+    
+
+    final response = await http.put(
+      uri,
+      headers: headers,
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      String responseBody = utf8.decode(response.bodyBytes);
+      Map<String, dynamic> jsonResponse = jsonDecode(responseBody);
+      return jsonResponse;
+    } else {
+      throw Exception('Failed to post data');
+    }
+  }
 }
