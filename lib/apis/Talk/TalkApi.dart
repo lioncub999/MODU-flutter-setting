@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:modu_flutter/apis/File/FileModel.dart';
 import 'package:modu_flutter/utils/axios/axios_utils.dart';
 
 import '../ApiResponse.dart';
@@ -21,5 +24,15 @@ class TalkApi {
     apiResponse.ok = response["ok"];
 
     return response;
+  }
+
+  static Future<void> getPresignedUrl(data) async {
+    var response = await ApiService.postRequest("/uploadFile", data);
+    var result = response['result'];
+
+    FileModel fileModel = new FileModel();
+    fileModel.presignedUrl = result['presignedUrl'];
+
+    print(fileModel.presignedUrl);
   }
 }
