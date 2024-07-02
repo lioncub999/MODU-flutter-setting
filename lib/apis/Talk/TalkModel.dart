@@ -7,6 +7,8 @@ class Talk extends ApiResponse{
   String? userNm;
   String? userGender;
   String? creDtm;
+  String? fileId;
+  String? imgWebPath;
 
   Talk({
     this.talkId,
@@ -15,6 +17,8 @@ class Talk extends ApiResponse{
     this.userNm,
     this.userGender,
     this.creDtm,
+    this.fileId,
+    this.imgWebPath,
   });
 
   // fromJson 생성자 추가
@@ -26,6 +30,8 @@ class Talk extends ApiResponse{
       userNm: json['userNm'],
       userGender: json['userGender'],
       creDtm: json['creDtm'],
+      fileId : json['fileId'],
+      imgWebPath: json['imgWebPath'],
     );
   }
 
@@ -36,5 +42,7 @@ class Talk extends ApiResponse{
     'userNm' : userNm,
     'userGender' : userGender,
     'creDtm' : creDtm,
+    'fileId' : fileId,
+    'imgWebPath' : imgWebPath,
   };
 }

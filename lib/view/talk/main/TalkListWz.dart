@@ -84,7 +84,7 @@ class TalkListWz extends StatelessWidget {
                   child: Container(
                     margin: EdgeInsets.all(10),
                     child: Image.network(
-                      'https://modu-s3-dev.s3.ap-northeast-2.amazonaws.com/2024/06/03/1717395093529_%ED%8C%8C%EC%9D%BC%EC%9D%B4%EB%A6%84PR-240603L7466749476',
+                      talk.imgWebPath ?? '',
                       width: 40,
                       height: 40,
                       fit: BoxFit.fill,

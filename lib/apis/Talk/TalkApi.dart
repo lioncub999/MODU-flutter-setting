@@ -26,13 +26,15 @@ class TalkApi {
     return response;
   }
 
-  static Future<void> getPresignedUrl(data) async {
+  static Future<FileModel> getPresignedUrl(data) async {
     var response = await ApiService.postRequest("/uploadFile", data);
     var result = response['result'];
 
     FileModel fileModel = new FileModel();
     fileModel.presignedUrl = result['presignedUrl'];
+    fileModel.fileId = result['fileId'];
+    fileModel.bucketKey = result['bucketKey'];
 
-    print(fileModel.presignedUrl);
+    return fileModel;
   }
 }
