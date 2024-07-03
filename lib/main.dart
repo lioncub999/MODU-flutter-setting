@@ -70,12 +70,9 @@ class _MyAppState extends State<MyApp> {
       // TODO: 로그인 완료시 메인
       Scaffold(
         body: [
-          // TODO: BottomNav - Tap - TalkPage
-          TalkPage(),
-          // TODO: BottomNav - Tap - ChatPage
-          ChatPage(),
-          // TODO: BottomNav - Tap - SettingPage
-          SettingPage(),
+          TalkPage(), // TODO: BottomNav - Tap - TalkPage
+          ChatPage(), // TODO: BottomNav - Tap - ChatPage
+          SettingPage(), // TODO: BottomNav - Tap - SettingPage
         ][context.watch<MainStore>().tapState],
 
         //TODO: 공통 BottomNavbar

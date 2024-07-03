@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:modu_flutter/apis/File/FileModel.dart';
 import 'package:modu_flutter/utils/axios/axios_utils.dart';
 
@@ -27,7 +25,7 @@ class TalkApi {
   }
 
   static Future<FileModel> getPresignedUrl(data) async {
-    var response = await ApiService.postRequest("/uploadFile", data);
+    var response = await ApiService.postRequest("/talk/uploadImg", data);
     var result = response['result'];
 
     FileModel fileModel = new FileModel();

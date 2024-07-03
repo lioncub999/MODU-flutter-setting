@@ -7,10 +7,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:modu_flutter/apis/File/FileModel.dart';
 import 'package:modu_flutter/apis/Talk/TalkApi.dart';
 import 'package:modu_flutter/apis/Talk/TalkModel.dart';
-import 'package:modu_flutter/utils/axios/axios_utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 
 import '../../../provider/TalkStore.dart';
 
@@ -29,52 +29,85 @@ class _BoardWriteState extends State<TalkWritePage> {
       _image = image;
     });
   }
+
   // TODO: 사진 권한 허용
   Future<void> _requestPermission() async {
     var status = await Permission.photos.status;
     if (!status.isGranted) {
       status = await Permission.photos.request();
     }
-    if (status.isGranted) { //사진첩 접근 권한 허용됨
+    if (status.isGranted) {
+      //사진첩 접근 권한 허용됨
       _pickImage(); // 권한이 허용된 경우 이미지 선택 함수 호출
-    } else if (status.isDenied) { //사진첩 접근 권한 거부됨
-    } else if (status.isPermanentlyDenied) { //사진첩 접근 권한 영구적으로 거부됨
+    } else if (status.isDenied) {
+      //사진첩 접근 권한 거부됨
+    } else if (status.isPermanentlyDenied) {
+      //사진첩 접근 권한 영구적으로 거부됨
       _showPermissionDialog();
     }
   }
-  // TODO: 사진첩에서 사진 선택
+
+  // TODO: 사진첩 에서 사진 선택
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) { // 파일을 선택한 경우
-      setState(() {
-        _image = pickedFile; // 선택된 파일을 상태로 저장
-      });
+    if (pickedFile != null) {
+      // 파일을 선택한 경우
+      _showPreviewDialog(pickedFile);
     }
   }
+
+  void _showPreviewDialog(XFile image) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('사진 선택'),
+          content: Image.file(File(image.path)),
+          actions: <Widget>[
+            TextButton(
+              child: Text('취소'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('확인'),
+              onPressed: () {
+                setState(() {
+                  _image = image;
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // TODO: 사진 접근 권한 허용 알림
   void _showPermissionDialog() {
     showDialog(
       context: context,
-      builder: (BuildContext context) =>
-          AlertDialog(
-            title: Text('권한 필요'),
-            content: Text('사진첩 접근 권한이 필요합니다. 설정에서 권한을 허용해주세요.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('취소'),
-              ),
-              TextButton(
-                onPressed: () {
-                  openAppSettings();
-                  Navigator.of(context).pop();
-                },
-                child: Text('설정으로 이동'),
-              ),
-            ],
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('권한 필요'),
+        content: Text('사진첩 접근 권한이 필요합니다. 설정에서 권한을 허용해주세요.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('취소'),
           ),
+          TextButton(
+            onPressed: () {
+              openAppSettings();
+              Navigator.of(context).pop();
+            },
+            child: Text('설정으로 이동'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -104,8 +137,10 @@ class _BoardWriteState extends State<TalkWritePage> {
         fileModel.fileName = file.path.split('/').last;
         fileModel.fileSize = file.lengthSync();
         fileModel.fileSeq = 1;
+        fileModel.fileExt = path.extension(file.path);
 
-        FileModel presigndInfo = await TalkApi.getPresignedUrl(fileModel.toJson());
+        FileModel presigndInfo =
+            await TalkApi.getPresignedUrl(fileModel.toJson());
         fileModel.presignedUrl = presigndInfo.presignedUrl;
         fileModel.fileId = presigndInfo.fileId;
         fileModel.bucketKey = presigndInfo.bucketKey;
@@ -207,33 +242,33 @@ class _BoardWriteState extends State<TalkWritePage> {
 
               _image == null
                   ?
-              // TODO: 사진 등록
-              Container(
-                child: IconButton(
-                  icon: Icon(Icons.add_to_photos),
-                  onPressed: () {
-                    _requestPermission();
-                  },
-                  iconSize: 70,
-                ),
-              )
+                  // TODO: 사진 등록
+                  Container(
+                      child: IconButton(
+                        icon: Icon(Icons.add_to_photos),
+                        onPressed: () {
+                          _requestPermission();
+                        },
+                        iconSize: 70,
+                      ),
+                    )
                   : Column(children: [
-                Container(
-                  width: 300,
-                  height: 300,
-                  child:
-                  Image.file(File(_image!.path)), //가져온 이미지를 화면에 띄워주는 코드
-                ),
-                Container(
-                    child: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        setXfile(null);
-                      },
-                      iconSize: 70,
-                    ),
-                )
-              ]),
+                      Container(
+                        width: 300,
+                        height: 300,
+                        child: Image.file(
+                            File(_image!.path)), //가져온 이미지를 화면에 띄워주는 코드
+                      ),
+                      Container(
+                        child: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            setXfile(null);
+                          },
+                          iconSize: 70,
+                        ),
+                      )
+                    ]),
 
               // TODO: 제제 대상 박스
               Container(
@@ -241,9 +276,9 @@ class _BoardWriteState extends State<TalkWritePage> {
                 margin: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.black,
-                      width: 2,
-                    )),
+                  color: Colors.black,
+                  width: 2,
+                )),
                 child: Text("<제제대상> 어쩌구 저쩌구"),
               ),
             ],
@@ -257,10 +292,12 @@ class _BoardWriteState extends State<TalkWritePage> {
 // TODO: 200자 넘었을때 한글까지 막음
 class _LengthLimitingTextInputFormatterFixed extends TextInputFormatter {
   final int maxLength;
+
   _LengthLimitingTextInputFormatterFixed(this.maxLength);
+
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue,
-      TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     if (newValue.text.characters.length > maxLength) {
       return oldValue;
     }
