@@ -31,7 +31,6 @@ class TalkApi {
     FileModel fileModel = new FileModel();
     fileModel.presignedUrl = result['presignedUrl'];
     fileModel.fileId = result['fileId'];
-    fileModel.bucketKey = result['bucketKey'];
 
     return fileModel;
   }

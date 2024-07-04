@@ -143,7 +143,6 @@ class _BoardWriteState extends State<TalkWritePage> {
             await TalkApi.getPresignedUrl(fileModel.toJson());
         fileModel.presignedUrl = presigndInfo.presignedUrl;
         fileModel.fileId = presigndInfo.fileId;
-        fileModel.bucketKey = presigndInfo.bucketKey;
 
         // http PUT 요청을 보낼 준비
         if (fileModel.presignedUrl != null) {

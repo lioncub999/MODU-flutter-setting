@@ -8,7 +8,6 @@ class FileModel extends ApiResponse {
   int? fileSeq;
   String? presignedUrl;
   String? fileId;
-  String? bucketKey;
   String? fileExt;
 
   Map<String, dynamic> toJson() => {
@@ -18,7 +17,6 @@ class FileModel extends ApiResponse {
     'fileSeq' : fileSeq,
     'fileId' : fileId,
     'presignedUrl' : presignedUrl,
-    'bucketKey' : bucketKey,
     'fileExt' : fileExt,
   };
 }
